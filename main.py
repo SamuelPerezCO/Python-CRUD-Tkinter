@@ -4,7 +4,7 @@ from ventana import Ventana
 
 def main():
     root = Tk()
-    root.wm_title("Crud Pyrhon MySql")
+    root.wm_title("Crud Python MySql")
     app = Ventana(root)
     app.mainloop()
 
