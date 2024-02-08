@@ -29,9 +29,13 @@ def elimina_ciudad(Id):
     cur.close()
     return n
 
-print(elimina_ciudad(12))
-
-dat = consulta_ciudades()
-
-for fila in dat:
-    print(fila)
+def modifica_cuidad(Id , ISO3 , CountryName , Capital , CurrencyCode):
+    cur = cnn.cursor()
+    sql = f'''UPDATE countries set ISO3='{ISO3}' , CountryName = '{CountryName}' , Capital = '{Capital}' ,
+    CurrencyCode = '{CurrencyCode}' WHERE Id = '{Id}'
+    '''
+    cur.execute(sql)
+    n = cur.rowcount
+    cnn.commit()
+    cur.close()
+    return n
