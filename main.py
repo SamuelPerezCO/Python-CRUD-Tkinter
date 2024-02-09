@@ -1,8 +1,9 @@
+'''
 from Cities import Countries
 
 paises = Countries()
 
-menu = '''==========================
+menu = "==========================
 * MENU paises *
 ==========================
 *                        *
@@ -12,7 +13,7 @@ menu = '''==========================
 * p) Imprimir la tabla   *
 * x) Salir               *
 *                        *
-=========================='''
+=========================="
 
 def main():
     opcion = '0'
@@ -76,6 +77,6 @@ def main():
     root.wm_title("Crud Python MySql")
     app = Ventana(root)
     app.mainloop()
-'''
+
 if __name__ == "__main__":
     main() 
