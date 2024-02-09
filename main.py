@@ -1,3 +1,7 @@
+from Cities import Cities 
+
+ciudades = Cities()
+'''
 from tkinter import *
 from ventana import *
 from ventana import Ventana
@@ -10,3 +14,4 @@ def main():
 
 if __name__ == "__main__":
     main() 
+'''
