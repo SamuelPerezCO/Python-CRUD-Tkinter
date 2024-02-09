@@ -13,6 +13,12 @@ class Ventana(Frame):
         self.create_widgets()
         self.llenaDatos()
 
+    def habilitarCajas(self , estado):
+        self.txtISO3.configure(state=estado)
+        self.txtCapital.configure(state=estado)
+        self.txtName.configure(state=estado)
+
+
     def llenaDatos(self):
 
         datos = self.paises.consulta_paises()
@@ -22,6 +28,7 @@ class Ventana(Frame):
 
 
     def fNuevo(self):
+        self.habilitarCajas()
         pass
 
     def fModificar(self):
