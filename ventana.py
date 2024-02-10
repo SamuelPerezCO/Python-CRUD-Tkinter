@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter import ttk
-from countries import Countries
+from countries import *
 
 class Ventana(Frame):
 
@@ -12,15 +12,36 @@ class Ventana(Frame):
         self.pack()
         self.create_widgets()
         self.llenaDatos()
+        self.habilitarCajas("disabled")
+        self.habilitarBtnOper("normal")
+        self.habilitarBtnGuardar("disabled")
 
     def habilitarCajas(self , estado):
         self.txtISO3.configure(state=estado)
         self.txtCapital.configure(state=estado)
         self.txtName.configure(state=estado)
+        self.txtCurrency.configure(state=estado)
 
+    def habilitarBtnOper(self , estado):
+        self.btnNuevo.configure(state = estado)
+        self.btnModificar.configure(state = estado)
+        self.btnEliminar.configure(state = estado)
+
+    def habilitarBtnGuardar(self , estado):
+        self.btnGuardar.configure(state = estado)
+        self.btnCancelar.configure(state = estado)
+
+    def limpiarCajas(self):
+        self.txtISO3.delete(0 , END)
+        self.txtCapital.delete(0 , END)
+        self.txtName.delete(0 , END)
+        self.txtCurrency.delete(0 , END)
+    
+    def limpiaGrid(self):
+        for item in self.grid.get_children():
+            self.grid.delete(item)
 
     def llenaDatos(self):
-
         datos = self.paises.consulta_paises()
 
         for row in datos:
@@ -28,16 +49,27 @@ class Ventana(Frame):
 
 
     def fNuevo(self):
-        self.habilitarCajas()
+        self.habilitarCajas("normal")
+        self.habilitarBtnOper("disabled")
+        self.habilitarBtnGuardar("normal")
+        self.limpiarCajas()
+        self.txtISO3.focus()
         pass
+
+    
+    def fGuardar(self):
+        self.paises.inserta_pais(self.txtISO3.get() , self.txtName.get() , self.txtCapital.get() , self.txtCurrency.get())
+        self.limpiaGrid()
+        self.llenaDatos()
+        self.habilitarBtnGuardar("disabled")
+        self.habilitarBtnOper("normal")
+        self.limpiarCajas()
+        self.habilitarCajas("disabled")
 
     def fModificar(self):
         pass
 
     def fEliminar(self):
-        pass
-
-    def fGuardar(self):
         pass
 
     def fCancelar(self):
