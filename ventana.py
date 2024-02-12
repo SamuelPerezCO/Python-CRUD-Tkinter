@@ -16,6 +16,7 @@ class Ventana(Frame):
         self.habilitarCajas("disabled")
         self.habilitarBtnOper("normal")
         self.habilitarBtnGuardar("disabled")
+        self.id = -1
 
     def habilitarCajas(self , estado):
         self.txtISO3.configure(state=estado)
@@ -48,6 +49,8 @@ class Ventana(Frame):
         for row in datos:
             self.grid.insert("" , END , text = row[0] , values=(row[1] , row[2] , row[3] , row[4]))
 
+        if len(self.grid.get_children()) > 0:
+            self.grid.selection_set(self.grid.get_children()[0])
 
     def fNuevo(self):
         self.habilitarCajas("normal")
@@ -59,16 +62,40 @@ class Ventana(Frame):
 
     
     def fGuardar(self):
-        self.paises.inserta_pais(self.txtISO3.get() , self.txtName.get() , self.txtCapital.get() , self.txtCurrency.get())
+        if self.id == -1:
+            self.paises.inserta_pais(self.txtISO3.get() , self.txtName.get() , self.txtCapital.get() , self.txtCurrency.get())
+            messagebox.showinfo("Insertar" , "Elemento insertado correctamentes")
+        else:
+            self.paises.modifica_pais(self.id , self.txtISO3.get() , self.txtName.get() , self.txtCapital.get() , self.txtCurrency.get())
+            messagebox.showinfo("Modificar" , "elemento modificado correctamente")
+            self.id = -1
+
         self.limpiaGrid()
         self.llenaDatos()
+        self.limpiarCajas()
         self.habilitarBtnGuardar("disabled")
         self.habilitarBtnOper("normal")
         self.limpiarCajas()
         self.habilitarCajas("disabled")
 
+
     def fModificar(self):
-        pass
+        selected = self.grid.focus()
+        clave = self.grid.item(selected , 'text')
+        if clave == '':
+            messagebox.showwarning("Modificar" , "Debes seleccionar un elemento.")
+        else:
+            self.id = clave
+            self.habilitarCajas("normal")
+            valores = self.grid.item(selected , 'values')
+            self.limpiarCajas()
+            self.txtISO3.insert(0 , valores[0])
+            self.txtName.insert(0 , valores[1])
+            self.txtCapital.insert(0 , valores[2])
+            self.txtCurrency.insert(0 , valores[3])
+            self.habilitarBtnOper("disabled")
+            self.habilitarBtnGuardar("normal")
+            self.txtISO3.focus()
 
     def fEliminar(self):
         selected = self.grid.focus()
@@ -82,6 +109,7 @@ class Ventana(Frame):
             r = messagebox.askquestion("Eliminar" , "Deseas eliminar el registro seleccionado \n" + data)
 
             if r == messagebox.YES:
+                #self.id = -1
                 n = self.paises.elimina_pais(clave)
                 if n == 1:
                     messagebox.showinfo("Eliminar" , 'Elemento eliminado correctamente.')
@@ -92,7 +120,13 @@ class Ventana(Frame):
 
 
     def fCancelar(self):
-        pass
+       r = messagebox.askquestion("Cancelar" , "Esta seguro que desea cancelar la operacion actual?") 
+       if r == messagebox.YES:
+           self.limpiarCajas()
+           self.habilitarBtnGuardar("disabled")
+           self.habilitarBtnOper("normal")
+           self.habilitarCajas("disabled")
+           
 
 
     def create_widgets(self):
@@ -164,3 +198,4 @@ class Ventana(Frame):
         sb.pack(side = RIGHT , fill = Y)
         self.grid.config(yscrollcommand = sb.set)
         sb.config(command = self.grid.yview)
+        self.grid['selectmode'] = 'browse'
